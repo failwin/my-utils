@@ -200,10 +200,10 @@ var UtilService = (function() {
     };
 
     UtilService.prototype.getWiddowWidth = function() {
-        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        return document.documentElement.clientWidth || document.body.clientWidth;
     };
     UtilService.prototype.getWiddowHeight = function() {
-        return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        return document.documentElement.clientHeight || document.body.clientHeight;
     };
     UtilService.prototype.getWiddowScrollTop = function() {
         return window.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop;
