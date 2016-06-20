@@ -18,10 +18,24 @@
     "map-stream": "0.0.6"
   },
   "scripts": {
-    "build": ".\\node_modules\\.bin\\gulp build",
-    "build-min": ".\\node_modules\\.bin\\gulp build-min",
-    "watch": ".\\node_modules\\.bin\\gulp watch",
-    "test": ".\\node_modules\\.bin\\karma start karma.conf.js --single-run",
-    "test-watch": ".\\node_modules\\.bin\\karma start karma.conf.js"
-  }
+    "build": "gulp build",
+    "build-min": "gulp build-min",
+    "watch": "gulp watch",
+    "test": "karma start karma.conf.js --single-run",
+    "test-watch": "karma start karma.conf.js"
+  },
+  "main": "src/utils.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/failwin/my-utils.git"
+  },
+  "author": "Yura Kovalchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/failwin/my-utils/issues"
+  },
+  "homepage": "https://github.com/failwin/my-utils#readme"
 }
