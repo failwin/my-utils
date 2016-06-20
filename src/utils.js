@@ -149,7 +149,8 @@ var UtilService = (function() {
         var type = typeof obj;
         return type === 'string' && !!obj;
     };
-    UtilService.prototype.isFunction = function(obj) {
+    UtilService.prototype.isFunction = function(obj, _name) {
+        var name = _name || 'Function';
         return Object.prototype.toString.call(obj) === '[object ' + name + ']';
     };
 
@@ -177,11 +178,11 @@ var UtilService = (function() {
                 }
 
                 // Recurse if we're merging plain objects or arrays
-                if ( deep && copy && (copyIsArray = this.isArray(copy)) ) {
+                if ( deep && copy && this.isObject(copy) && !this.isFunction(copy)) {
+                    copyIsArray = this.isArray(copy);
                     if ( copyIsArray ) {
                         copyIsArray = false;
                         clone = src && this.isArray(src) ? src : [];
-
                     } else {
                         clone = src ? src : {};
                     }

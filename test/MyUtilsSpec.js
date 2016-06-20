@@ -202,4 +202,118 @@ describe('UtilService', function() {
             expect(clickHandler.calls.count()).toBe(1);
         });
     });
+
+    describe('isArray', function() {
+
+        it('should determinate array like an array', function() {
+            var o = [];
+            expect(utils.isArray(o)).toBeTruthy();
+        });
+
+        it('should determinate object like not an array', function() {
+            var o = {};
+            expect(utils.isArray(o)).not.toBeTruthy();
+        });
+    });
+
+    describe('isObject', function() {
+
+        it('should determinate array like a object', function() {
+            var o = [];
+            expect(utils.isObject(o)).toBeTruthy();
+        });
+
+        it('should determinate object like a object', function() {
+            var o = {};
+            expect(utils.isObject(o)).toBeTruthy();
+        });
+
+        it('should determinate function like a object', function() {
+            var o = function(){};
+            expect(utils.isObject(o)).toBeTruthy();
+        });
+    });
+
+    describe('isFunction', function() {
+
+        it('should determinate function like a function', function() {
+            var o = function(){};
+            expect(utils.isFunction(o)).toBeTruthy();
+        });
+
+        it('should determinate array like not a function', function() {
+            var o = [];
+            expect(utils.isFunction(o)).not.toBeTruthy();
+        });
+
+        it('should determinate object like not a function', function() {
+            var o = {};
+            expect(utils.isFunction(o)).not.toBeTruthy();
+        });
+    });
+
+    describe('extend', function() {
+
+        it('should extend object with simple types', function() {
+            var from = {a: 10, b: 'str'};
+            var res = utils.extend({}, from);
+            expect(res).not.toBe(from);
+            expect(res).toEqual(from);
+        });
+
+        it('should extend object with object types', function() {
+            var from = {a: 10, b: 'str', c: {a: 1}, d: [0, 1, 2]};
+            var res = utils.extend({}, from);
+            expect(res).not.toBe(from);
+            expect(res).toEqual(from);
+        });
+
+        it('should copy only reference for nested object types', function() {
+            var from = {a: 10, b: 'str', c: {a: 1}, d: [0, 1, 2]};
+            var res = utils.extend({}, from);
+            expect(res.c).toBe(from.c);
+            expect(res.d).toBe(from.d);
+        });
+
+        it('should deep copy nested object types', function() {
+            var from = {a: 10, b: 'str', c: {a: 1}, d: [0, 1, 2]};
+            var res = utils.extend({}, from, true);
+
+            expect(res.c).not.toBe(from.c);
+            expect(res.d).not.toBe(from.d);
+
+            expect(res.c).toEqual(from.c);
+            expect(res.d).toEqual(from.d);
+        });
+
+        it('should copy functions types', function() {
+            var wasCalled = false;
+            var from = {a: 10, b: 'str', c: {a: 1}, d: [0, 1, 2], e: function(){wasCalled = true;}};
+            var res = utils.extend({}, from);
+
+            expect(res.c).toBe(from.c);
+            expect(res.d).toBe(from.d);
+            expect(res.e).toBeDefined();
+            expect(res.e).toBe(from.e);
+
+            expect(wasCalled).toBe(false);
+            res.e();
+            expect(wasCalled).toBe(true);
+        });
+
+        it('should copy function reference with isDeep flag', function() {
+            var wasCalled = false;
+            var from = {a: 10, b: 'str', c: {a: 1}, d: [0, 1, 2], e: function(){wasCalled = true;}};
+            var res = utils.extend({}, from, true);
+
+            expect(res.c).not.toBe(from.c);
+            expect(res.d).not.toBe(from.d);
+            expect(res.e).toBeDefined();
+            expect(res.e).toBe(from.e);
+
+            expect(wasCalled).toBe(false);
+            res.e();
+            expect(wasCalled).toBe(true);
+        });
+    });
 });
