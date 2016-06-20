@@ -79,7 +79,7 @@ var UtilService = (function() {
         });
     };
 
-    UtilService.prototype.ajax = function(method, url, data) {
+    UtilService.prototype.ajax = function(method, url, data, opts) {
         var self = this;
         var promise;
 
@@ -98,6 +98,10 @@ var UtilService = (function() {
                     }
                 }
             };
+
+            if (opts.withCredentials) {
+                xmlhttp.withCredentials = true;
+            }
 
             if (method == 'POST') {
                 if (typeof(FormData) !== 'undefined' && data instanceof FormData) {
