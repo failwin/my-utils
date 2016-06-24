@@ -18,6 +18,9 @@
 'use strict';
 var UtilService = (function() {
     function UtilService(){
+    	if (typeof window === 'undefined') {
+            return;
+        }
         this._id = 0;
         this._vendor = {};
 
