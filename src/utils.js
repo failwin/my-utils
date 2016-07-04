@@ -35,6 +35,9 @@ var UtilService = (function() {
         this.supportsColumns = this.supportsColumns();
         this.supportsVUnints = this.supportsVUnints();
 
+        var document = this.getDocument();
+        var window = this.getWindow();
+
         this.domReady(function(){
             if (this.supportsVUnints()) {
                 document.body.classList.add('vunits');
@@ -69,6 +72,20 @@ var UtilService = (function() {
             }
         }());
     }
+
+    UtilService.prototype.isWindow = function() {
+        var win = this.getWindow().
+        return (/iphone|ipad|ipod|android/i.test(win.navigator.userAgent.toLowerCase()));
+    };
+
+    UtilService.prototype.getWindow = function(node) {
+        let doc = this.getDocument(node);
+        return doc && doc.defaultView || doc.parentWindow;
+    };
+
+    UtilService.prototype.getDocument = function(node) {
+        return (node && node.ownerDocument) || document;
+    };
 
     UtilService.prototype.inherits = function(ctor, superCtor){
         ctor.super_ = superCtor;
@@ -208,16 +225,21 @@ var UtilService = (function() {
     };
 
     UtilService.prototype.getWiddowWidth = function() {
+        var document = this.getDocument();
         return document.documentElement.clientWidth || document.body.clientWidth;
     };
     UtilService.prototype.getWiddowHeight = function() {
+        var document = this.getDocument();
         return document.documentElement.clientHeight || document.body.clientHeight;
     };
     UtilService.prototype.getWiddowScrollTop = function() {
+        var document = this.getDocument();
+        var window = this.getWindow();
         return window.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop;
     };
 
     UtilService.prototype.supportsTransitions = function() {
+        var document = this.getDocument();
         //return function(){return false;};
         var _elementStyle = document.createElement('div').style;
 
@@ -226,6 +248,7 @@ var UtilService = (function() {
         return function(){return result;};
     };
     UtilService.prototype.supportsPlaceholder = function() {
+        var document = this.getDocument();
         var input = document.createElement('input');
         var support = typeof (input.placeholder) != 'undefined';
         return function() {
@@ -233,6 +256,7 @@ var UtilService = (function() {
         };
     };
     UtilService.prototype.supportsPerspective = function() {
+        var document = this.getDocument();
         var _elementStyle = document.createElement('div').style;
 
         var result =  this.getPrefixedPropertyName('perspective') in _elementStyle;
@@ -240,6 +264,7 @@ var UtilService = (function() {
         return function() { return result; };
     };
     UtilService.prototype.supportsColumns = function() {
+        var document = this.getDocument();
         var elementStyle = document.createElement('div').style;
 
         var result = false;
@@ -267,6 +292,9 @@ var UtilService = (function() {
     };
     UtilService.prototype.supportsVUnints = function() {
         var result = true;
+
+        var document = this.getDocument();
+        var window = this.getWindow();
 
         var elementStyle = document.createElement('div').style;
 
@@ -379,6 +407,8 @@ var UtilService = (function() {
         }
     };
     UtilService.prototype.createElement = function(str) {
+        var document = this.getDocument();
+
         var frag = document.createDocumentFragment();
 
         var elem = document.createElement('div');
@@ -401,6 +431,8 @@ var UtilService = (function() {
         return i;
     };
     UtilService.prototype.isElementMatched = function(element, selector) {
+        var document = this.getDocument();
+
         var p = Element.prototype;
         var f = p.matches || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || function(s) {
                 return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
@@ -432,6 +464,9 @@ var UtilService = (function() {
         if (!$holders) {
             return;
         }
+
+        var document = this.getDocument();
+        var window = this.getWindow();
 
         if (typeof targetSelector == 'function') {
             handler = targetSelector;
@@ -667,6 +702,8 @@ var UtilService = (function() {
         }
     };
     UtilService.prototype._initVendors = function() {
+        var document = this.getDocument();
+
         var i, transform, vendor, vendorsCss, vendors, _i, _len, elementStyle;
         elementStyle = document.createElement('div').style;
         vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'];
@@ -1011,12 +1048,17 @@ var UtilService = (function() {
         }
     };
     UtilService.prototype._readyStateChange = function() {
+        var document = this.getDocument();
+
         if ( document.readyState === "complete" ) {
             this._ready();
         }
     };
     UtilService.prototype.domReady = function(callback) {
         var self = this;
+
+        var document = this.getDocument();
+        var window = this.getWindow();
 
         if (this._readyFired) {
             setTimeout(function() {callback();}, 1);
@@ -1051,6 +1093,9 @@ var UtilService = (function() {
 
     UtilService.prototype.scrollTo = function(dest, time, callback) {
         callback = callback || function () {};
+
+        var document = this.getDocument();
+        var window = this.getWindow();
 
         var element = document.body;
 
