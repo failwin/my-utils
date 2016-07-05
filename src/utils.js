@@ -73,8 +73,8 @@ var UtilService = (function() {
         }());
     }
 
-    UtilService.prototype.isWindow = function() {
-        var win = this.getWindow().
+    UtilService.prototype.isMobile = function() {
+        var win = this.getWindow();
         return (/iphone|ipad|ipod|android/i.test(win.navigator.userAgent.toLowerCase()));
     };
 
