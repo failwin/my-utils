@@ -18,9 +18,10 @@
     "map-stream": "0.0.6"
   },
   "scripts": {
-    "build": "gulp build",
-    "build-min": "gulp build-min",
+    "build": "gulp jshint && gulp build",
+    "build-min": "gulp jshint && gulp build-min",
     "watch": "gulp watch",
+    "lint": "gulp jshint",
     "test": "karma start karma.conf.js --single-run",
     "test-watch": "karma start karma.conf.js"
   },

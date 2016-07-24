@@ -15,7 +15,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('jshint', function() {
-    return gulp.src(['./js/**/*.js', '!./js/*.min.js', '!./js/lib/**/*.js'])
+    return gulp.src(['./src/**/*.js'])
         .pipe(jshint())
         .pipe(map(function (file, cb) {
             if (!file.jshint.success) {
