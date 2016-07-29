@@ -2,24 +2,20 @@
 	'use strict';
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['exports'], factory);
+        define('my-utils', [], factory);
     } else if (typeof exports !== 'undefined') {
         // CommonJS
-        factory(exports);
+        module.exports = factory();
     } else {
         // Browser globals
-        var mod = {
-            exports: {}
-        };
-        var result = factory(mod.exports);
-        global.utils = result ? result : mod.exports;
+        global.utils = factory();
     }
-})(this, function (exports) {
+})(this, function () {
 
 'use strict';
 var UtilService = (function() {
     function UtilService(){
-    	if (typeof window === 'undefined') {
+        if (typeof window === 'undefined') {
             return;
         }
         this._id = 0;
@@ -36,12 +32,12 @@ var UtilService = (function() {
         this.supportsColumns = this.supportsColumns();
         this.supportsVUnints = this.supportsVUnints();
 
-        var document = this.getDocument();
-        var window = this.getWindow();
+        var doc = this.getDocument();
+        var win = this.getWindow();
 
         this.domReady(function(){
             if (this.supportsVUnints()) {
-                document.body.classList.add('vunits');
+                doc.body.classList.add('vunits');
             }
         }.bind(this));
 
@@ -49,16 +45,16 @@ var UtilService = (function() {
         (function() {
             var lastTime = 0;
             var vendors = ['ms', 'moz', 'webkit', 'o'];
-            for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-                window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-                window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] ||
-                    window[vendors[x]+'CancelRequestAnimationFrame'];
+            for(var x = 0; x < vendors.length && !win.requestAnimationFrame; ++x) {
+                win.requestAnimationFrame = win[vendors[x]+'RequestAnimationFrame'];
+                win.cancelAnimationFrame = win[vendors[x]+'CancelAnimationFrame'] ||
+                    win[vendors[x]+'CancelRequestAnimationFrame'];
             }
-            if (!window.requestAnimationFrame) {
-                window.requestAnimationFrame = function (callback, element) {
+            if (!win.requestAnimationFrame) {
+                win.requestAnimationFrame = function (callback, element) {
                     var currTime = new Date().getTime();
                     var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                    var id = window.setTimeout(function () {
+                    var id = win.setTimeout(function () {
                             callback(currTime + timeToCall);
                         },
                         timeToCall);
@@ -66,8 +62,8 @@ var UtilService = (function() {
                     return id;
                 };
             }
-            if (!window.cancelAnimationFrame) {
-                window.cancelAnimationFrame = function (id) {
+            if (!win.cancelAnimationFrame) {
+                win.cancelAnimationFrame = function (id) {
                     clearTimeout(id);
                 };
             }
@@ -870,9 +866,6 @@ var UtilService = (function() {
 
 var utils = new UtilService();
 utils.UtilService = UtilService;
-
-exports.utils = utils;
-exports.UtilService = UtilService;
 
 return utils;
 
