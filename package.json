@@ -15,7 +15,9 @@
     "karma-coverage": "~0.5.3",
     "karma-firefox-launcher": "~0.1.6",
     "karma-jasmine": "~0.3.6",
-    "map-stream": "0.0.6"
+    "map-stream": "0.0.6",
+    "simulate-event": "^1.4.0",
+    "sinon": "^1.17.5"
   },
   "scripts": {
     "build": "gulp jshint && gulp build",

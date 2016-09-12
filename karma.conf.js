@@ -15,6 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'lib/simulate-event/dist/simulate-event.js',
+      'lib/sinon/pkg/sinon.js',
       'src/utils.js',
       'test/helpers.js',
       'test/**/*Spec.js'

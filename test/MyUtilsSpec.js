@@ -1,3 +1,6 @@
+var simulateEvent = window.simulateEvent;
+var sinon = window.sinon;
+
 var utils = window.utils;
 var UtilService = utils.UtilService;
 
@@ -54,11 +57,32 @@ describe('UtilService', function() {
     });
 
     describe('transitionEnd', function() {
+        var callback,
+            elem;
+
+        beforeEach(function(){
+            callback = jasmine.createSpy('transitionEndHandler');
+            elem = utils.createElement('<div class="my-class" />');
+        });
+
+        it('should call callback at transition end event', function() {
+            utils.transitionEnd(elem, 'my-class', callback);
+
+            simulateEvent.simulate(elem, 'transitionend');
+
+            expect(callback).toHaveBeenCalled();
+            expect(callback.calls.count()).toBe(1);
+        });
+
+        it('should call callback at transition end event only when appropriate class is found', function() {
+            utils.transitionEnd(elem, 'my-fake-class', callback);
+
+            simulateEvent.simulate(elem, 'transitionend');
+
+            expect(callback).not.toHaveBeenCalled();
+        });
 
         it('should force finish animation', function() {
-            var callback = jasmine.createSpy('transitionEndHandler');
-            var elem = utils.createElement('<div class="my-class" />');
-
             var close = utils.transitionEnd(elem, 'my-class', callback);
 
             close();
@@ -69,6 +93,82 @@ describe('UtilService', function() {
             close();
 
             expect(callback.calls.count()).toBe(1);
+        });
+
+
+    });
+
+    describe('animateCss', function() {
+        var callback,
+            elem,
+            clock;
+
+        beforeEach(function(){
+            callback = jasmine.createSpy('transitionEndHandler');
+
+            var html = '<div class="my-class" style="position: relative; left: 1px; transform: rotate(9deg)"/>';
+            elem = utils.createElement(html);
+
+            clock = sinon.useFakeTimers();
+        });
+
+        afterEach(function(){
+            clock.restore();
+        });
+
+        it('should call callback immediately if no "duration" defined', function() {
+            utils.animateCss(elem,
+                {
+                    left: '10px'
+                },
+                {
+                    onComplete: callback
+                }
+            );
+
+            //simulateEvent.simulate(elem, 'transitionend');
+
+            expect(callback).toHaveBeenCalled();
+            expect(callback.calls.count()).toBe(1);
+        });
+
+        it('should call callback with some duration at transition end event', function() {
+            utils.animateCss(elem,
+                {
+                    left: '10px'
+                },
+                {
+                    duration: 100,
+                    onComplete: callback
+                }
+            );
+
+            expect(callback).not.toHaveBeenCalled();
+
+            simulateEvent.simulate(elem, 'transitionend');
+
+            expect(callback).toHaveBeenCalled();
+            expect(callback.calls.count()).toBe(1);
+        });
+
+        it('should apply defined styles', function() {
+            var transformName = utils.getPrefixedPropertyName('transform');
+            utils.animateCss(elem,
+                {
+                    left: '10px',
+                    transform: 'rotate(20deg)'
+                },
+                {
+                    duration: 100,
+                    onComplete: callback
+                }
+            );
+
+            clock.tick(25);
+            simulateEvent.simulate(elem, 'transitionend');
+
+            expect(elem.style.left).toBe('10px');
+            expect(elem.style[transformName]).toBe('rotate(20deg)');
         });
     });
 
