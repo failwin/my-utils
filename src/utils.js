@@ -116,7 +116,7 @@ var UtilService = (function() {
                 }
             };
 
-            if (opts.withCredentials) {
+            if (opts && opts.withCredentials) {
                 xmlhttp.withCredentials = true;
             }
 
