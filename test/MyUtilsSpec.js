@@ -11,6 +11,25 @@ describe('UtilService', function() {
         utils = new UtilService();
     });
 
+    describe('createElement', function() {
+        it('should return DOM element', function() {
+            var res = utils.createElement('<div id="elem">Bla</div>');
+
+            expect(res.id).toBe('elem');
+            expect(res instanceof HTMLElement).toBe(true);
+            expect(res instanceof DocumentFragment).toBe(false);
+            
+        });
+
+        it('should return Fragment DOM element', function() {
+            var res = utils.createElement('<div id="elem">Bla</div>', true);
+
+            expect(res.id).not.toBe('elem');
+            expect(res instanceof HTMLElement).toBe(false);
+            expect(res instanceof DocumentFragment).toBe(true);
+        });
+    });
+
     describe('insertBefore', function() {
 
         it('should add item to empty holder', function() {

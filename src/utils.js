@@ -353,7 +353,7 @@ var UtilService = (function() {
     UtilService.prototype.appendElement = function(parent, element) {
         var fragment = element;
         if(typeof element === 'string') {
-            fragment = this.createElement(element);
+            fragment = this.createElement(element, true);
         }
         parent.appendChild(fragment);
         return parent.lastChild;
@@ -361,7 +361,7 @@ var UtilService = (function() {
     UtilService.prototype.prependElement = function(parent, element) {
         var fragment = element;
         if(typeof element === 'string') {
-            fragment = this.createElement(element);
+            fragment = this.createElement(element, true);
         }
         if (!parent.firstChild) {
             parent.appendChild(fragment);
@@ -376,7 +376,7 @@ var UtilService = (function() {
         }
         var fragment = element;
         if(typeof element === 'string') {
-            fragment = this.createElement(element);
+            fragment = this.createElement(element, true);
         }
         return parent.insertBefore(fragment, where);
     };
@@ -384,13 +384,13 @@ var UtilService = (function() {
         if (index === 0) {
             return this.prependElement(parent, element);
         }
-        var prevElem = parent.children[index];
+        var prevElem = parent.children[index]; 
         if (!prevElem) {
             return this.appendElement(parent, element);
         }
         var fragment = element;
         if(typeof element === 'string') {
-            fragment = this.createElement(element);
+            fragment = this.createElement(element, true);
         }
         if (fragment === prevElem) {
             return prevElem;
@@ -403,7 +403,7 @@ var UtilService = (function() {
             element.removeChild(element.firstChild);
         }
     };
-    UtilService.prototype.createElement = function(str) {
+    UtilService.prototype.createElement = function(str, _returnFragment) {
         var document = this.getDocument();
 
         var frag = document.createDocumentFragment();
@@ -413,6 +413,9 @@ var UtilService = (function() {
 
         while (elem.childNodes[0]) {
             frag.appendChild(elem.childNodes[0]);
+        }
+        if (_returnFragment) { 
+            return frag;
         }
         return frag.childNodes[0];
     };
