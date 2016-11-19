@@ -120,7 +120,7 @@ var UtilService = (function() {
                 xmlhttp.withCredentials = true;
             }
 
-            if (method == 'POST') {
+            if (method.toLowerCase() == 'post') {
                 if (typeof(FormData) !== 'undefined' && data instanceof FormData) {
                     params = data;
                     xmlhttp.open(method, url, true);
