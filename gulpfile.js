@@ -5,7 +5,9 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     watch = require('gulp-watch');
 
-var    jshint = require('gulp-jshint');
+var jshint = require('gulp-jshint'),
+    uglify = require('gulp-uglify'),
+    rename = require('gulp-rename');
 
 var map = require('map-stream');
 
@@ -40,6 +42,15 @@ gulp.task('jshint', function() {
     };
 });
 
+gulp.task('js-min', ['jshint'], function () {
+    return gulp.src([
+        './src/utils.js'
+    ])
+    .pipe(uglify()).on('error', log)
+    .pipe(rename({ suffix: '.min' })).on('error', log)
+    .pipe(gulp.dest('./src'));
+});
+
 gulp.task('watch', function () {
 
 });
@@ -48,7 +59,7 @@ gulp.task('default', ['build']);
 
 gulp.task('build', ['clean', 'jshint']);
 
-gulp.task('build-min', ['clean', 'jshint']);
+gulp.task('build-min', ['clean', 'js-min']);
 
 function log(error) {
     console.log([
